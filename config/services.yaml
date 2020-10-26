@@ -25,3 +25,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+#    App\Migrations\MigrationFactory.inner:
+#        class: Doctrine\Migrations\Version\DbalMigrationFactory
+#        factory: [ '@doctrine.migrations.dependency_factory', 'getMigrationFactory' ]
+#
+#    App\Migrations\MigrationFactory:
+#        arguments: [ '@App\Migrations\MigrationFactory.inner', '@service_container' ]

@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DefaultController!{% endblock %}
+
+{% block body %}
+
+    <h1>MMA Camp Stats</h1>
+    <div class="page">
+        <div class="titles">
+
+            <span class="title">COACH</span>
+            <span class="title">Sessions</span>
+            <span class="title" data-type="punches">Punches</span>
+            <span class="title" data-type="punches-session">Punches <span class="little">/ session</span></span>
+            <span class="title" data-type="velocity">Average punch velocity</span>
+            <span class="title">Average session intensity</span>
+
+        </div>
+        <div class="coaches">
+
+            {% for coach in coaches %}
+                <div class="coach">
+                    <div class="identity">
+                        <img src="/images/coaches/{{ coach.name|lower }}.png">
+                        <span class="name"> {{ coach.name }}</span>
+                    </div>
+                    <span class="value">
+                        {{ coach.sessions|length }}
+                    </span>
+                    <span class="value" data-type="punches">
+                        {{ coach.punchesCount|number_format(0,'.', ' ') }}
+
+                        {% set detail = coach.countDetail %}
+                        <table>
+                            <tr>
+                                <td>{{ detail["Left"]["Straight"]|number_format(0,'.', ' ')  }}</td>
+                                <td>{{ detail["Right"]["Straight"]|number_format(0,'.', ' ')  }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ detail["Left"]["Power"]|number_format(0,'.', ' ')  }}</td>
+                                <td>{{ detail["Right"]["Power"]|number_format(0,'.', ' ')  }}</td>
+                            </tr>
+                        </table>
+                    </span>
+                    <span class="value" data-type="punches-session">
+                        {{ (coach.punchesCount / coach.sessions|length)|number_format(0) }}
+                         <table>
+                            <tr>
+                                <td>{{ (detail["Left"]["Straight"] / coach.sessions|length)|number_format(0) }}</td>
+                                <td>{{ (detail["Right"]["Straight"] / coach.sessions|length)|number_format(0) }}</td>
+                            </tr>
+                            <tr>
+                                <td>{{ (detail["Left"]["Power"] / coach.sessions|length)|number_format(0) }}</td>
+                                <td>{{ (detail["Right"]["Power"] / coach.sessions|length)|number_format(0) }}</td>
+                            </tr>
+                        </table>
+                    </span>
+                    <span class="value" data-type="velocity">
+                        {{ coach.averageVelocity|number_format(2,'.', ' ') }} km/h
+
+                         {% set velocities = coach.averageVelocityDetail %}
+                        <table>
+                            <tr>
+                                <td>{{ velocities["Left"]["Straight"]|number_format(2,'.', ' ') }} km/h</td>
+                                <td>{{ velocities["Right"]["Straight"] |number_format(2,'.', ' ') }} km/h</td>
+                            </tr>
+                            <tr>
+                                <td>{{ velocities["Left"]["Power"]|number_format(2,'.', ' ') }} km/h</td>
+                                <td>{{ velocities["Right"]["Power"]|number_format(2,'.', ' ') }} km/h</td>
+                            </tr>
+                        </table>
+                    </span>
+                    <span class="value">
+                        {{ (coach.averageIntensity/1000)|number_format(2) }}k
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+
+    <table>
+        <tr>
+            <td>Jab</td>
+            <td>Cross</td>
+        </tr>
+        <tr>
+            <td>Crochet/uppercut avant</td>
+            <td>Crochet/uppercut arrière</td>
+        </tr>
+    </table>
+{% endblock %}
